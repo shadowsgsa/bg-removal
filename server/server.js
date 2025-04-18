@@ -3,20 +3,21 @@ import express from 'express'
 import cors from 'cors'
 import connectDB from './configs/mongodb.js'
 
-console.log("ENV:", process.env); // check everything loaded
-console.log("MONGO_URI:", process.env.MONGODB_URI); // check this specifically
-
-
-// App Config
-const PORT = process.env.PORT || 4000
 const app = express()
-await connectDB()
 
-// Initialize Middlewares
+// Immediately invoke async DB connect
+(async () => {
+  await connectDB()
+})()
+
+// Middlewares
 app.use(express.json())
 app.use(cors())
 
-// API route
-app.get('/',(req,res)=> res.send("API Working"))
+// Route
+app.get('/', (req, res) => {
+  res.send("API Working from Vercel! 🎉")
+})
 
-app.listen(PORT, ()=> console.log("Server Running on port "+PORT))
+// 👇 Export the app instead of listening
+export default app
