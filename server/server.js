@@ -6,11 +6,23 @@ import { createServer } from 'http'
 
 const app = express()
 
-// Middlewares
-app.use(express.json())
-app.use(cors())
+// Connect to DB before starting the server
+const startServer = async () => {
+  try {
+    await connectDB()
 
-// API route
-app.get('/',(req,res)=> res.send("API Working"))
+    // Middlewares
+    app.use(express.json())
+    app.use(cors())
 
-app.listen(PORT, ()=> console.log("Server Running on port "+PORT))
+    // API route
+    app.get('/', (req, res) => res.send("API Working"))
+
+    const PORT = process.env.PORT || 5000
+    app.listen(PORT, () => console.log("Server Running on port " + PORT))
+  } catch (error) {
+    console.error("Failed to start server:", error)
+  }
+}
+
+startServer()
