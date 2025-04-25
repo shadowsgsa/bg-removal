@@ -10,15 +10,7 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-// DB connect
-await connectDB()
+// API route
+app.get('/',(req,res)=> res.send("API Working"))
 
-// Route
-app.get('/', (req, res) => {
-  res.send("API Working from Vercel! 🚀")
-})
-
-// 👇 Create a handler that wraps the app
-export default function handler(req, res) {
-  return app(req, res)
-}
+app.listen(PORT, ()=> console.log("Server Running on port "+PORT))
