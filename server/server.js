@@ -19,7 +19,7 @@ await connectDB()
 // Route
 
 app.get('/', (req, res) => {
-  res.send("API Working")
+  res.send("API Working from Vercel! 🚀")
 })
 
 // Export the handler
