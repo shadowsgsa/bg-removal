@@ -1,17 +1,28 @@
 import 'dotenv/config'
 import express from 'express'
-import serverless from 'serverless-http'
 import cors from 'cors'
 import connectDB from './configs/mongodb.js'
+import { createServer } from 'http'
 
+// App config
 const app = express()
-app.use(cors())
-app.use(express.json())
 
-// Connect to MongoDB once (usually outside the handler)
+// Middlewares
+app.use(express.json())
+app.use(cors())
+
+
+// DB connect
 await connectDB()
 
-app.get('/', (req, res) => res.send("API Working"))
+
+// Route
+
+app.get('/', (req, res) => {
+  res.send("API Working")
+})
 
 // Export the handler
-export const handler = serverless(app)
+export default function handler(req, res) {
+  return app(req, res)
+}
