@@ -1,28 +1,17 @@
 import 'dotenv/config'
 import express from 'express'
+import serverless from 'serverless-http'
 import cors from 'cors'
 import connectDB from './configs/mongodb.js'
-import { createServer } from 'http'
 
 const app = express()
+app.use(cors())
+app.use(express.json())
 
-// Connect to DB before starting the server
-const startServer = async () => {
-  try {
-    await connectDB()
+// Connect to MongoDB once (usually outside the handler)
+await connectDB()
 
-    // Middlewares
-    app.use(express.json())
-    app.use(cors())
+app.get('/', (req, res) => res.send("API Working"))
 
-    // API route
-    app.get('/', (req, res) => res.send("API Working"))
-
-    const PORT = process.env.PORT || 5000
-    app.listen(PORT, () => console.log("Server Running on port " + PORT))
-  } catch (error) {
-    console.error("Failed to start server:", error)
-  }
-}
-
-startServer()
+// Export the handler
+export const handler = serverless(app)
