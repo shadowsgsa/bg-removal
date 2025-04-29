@@ -3,6 +3,7 @@ import express from 'express'
 import cors from 'cors'
 import connectDB from './configs/mongodb.js'
 import { createServer } from 'http'
+import userRouter from './routes/userRoutes.js'
 
 // App config
 const app = express()
@@ -21,6 +22,7 @@ await connectDB()
 app.get('/', (req, res) => {
   res.send("API Working from Vercel! 🚀")
 })
+app.use('/api/user',userRouter)
 
 // Export the handler
 export default function handler(req, res) {
